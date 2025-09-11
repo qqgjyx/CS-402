@@ -1,3 +1,47 @@
+# LaTeX build artifacts
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.nav
+*.snm
+*.vrb
+*.synctex.gz
+*.synctex(busy)
+*.fdb_latexmk
+*.blg
+*.bbl
+*.xdv
+*.run.xml
+*.bcf
+*.ilg
+*.ind
+*.idx
+*.glg
+*.glo
+*.gls
+*.ist
+*.acn
+*.acr
+*.alg
+*.dvi
+*.ps
+*.thm
+
+# minted / pygments cache
+_minted*
+*.pyg
+
+# MacOS files
+.DS_Store
+
 -
 
 .ipynb_checkpoints
