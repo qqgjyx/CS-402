@@ -1,0 +1,193 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{tabularx}
+
+\begin{document}
+\section{Q1. Pacman MDP}
+
+\subsection{(a) Single Food Pellet Grid}
+Grid layout: 2×3 with food at F, discount $\gamma = 0.5$
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+A & B & C \\
+\hline
+D & E & F \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{(i) Optimal Policy (1 point)}
+
+Using Bellman equation: $V^*(s) = \max_a \sum_{s'} T(s,a,s')[R(s,a,s') + \gamma V^*(s')]$
+
+Q-value analysis:
+\begin{itemize}
+\item At A: Q(A,East) = Q(A,South) = 0.125
+\item At B: Q(B,East) = Q(B,South) = 0.25
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+State & $\pi(state)$ \\
+\hline
+A & East or South \\
+B & East or South \\
+C & South \\
+D & East \\
+E & East \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{(ii) Optimal Value V*(A) (1 point)}
+
+Working backwards from F:
+\begin{align*}
+V^*(F) &= 1 \\
+V^*(E) &= 0 + 0.5 \times 1 = 0.5 \\
+V^*(C) &= 0 + 0.5 \times 1 = 0.5 \\
+V^*(B) &= 0 + 0.5 \times 0.5 = 0.25 \\
+V^*(D) &= 0 + 0.5 \times 0.5 = 0.25 \\
+V^*(A) &= 0 + 0.5 \times 0.25 = 0.125
+\end{align*}
+
+$\boxed{V^*(A) = 0.125}$
+
+\textbf{(iii) Value Iteration Convergence (1 point)}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+k & V(A) & V(B) & V(C) & V(D) & V(E) & V(F) \\
+\hline
+0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+1 & 0 & 0 & 0.5 & 0 & 0.5 & 1 \\
+2 & 0 & 0.25 & 0.5 & 0.25 & 0.5 & 1 \\
+3 & 0.125 & 0.25 & 0.5 & 0.25 & 0.5 & 1 \\
+4 & 0.125 & 0.25 & 0.5 & 0.25 & 0.5 & 1 \\
+\hline
+\end{tabular}
+\end{center}
+
+$\boxed{k = 3}$
+
+\subsection{(b) Cherries at D and F}
+State space: $(position, cherry\_D, cherry\_F)$ where cherry status is 0/1, for disappeared and present.
+
+\textbf{(i) Optimal Policy with $\gamma=1$, living reward = -1 (1 point)}
+
+States with cherries worth 5 points, dot worth 1 point, living cost -1.
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+State & $\pi(state)$ \\
+\hline
+(A,1,1) & South \\
+(A,1,0) & South \\
+(A,0,1) & East \\
+(A,0,0) & East \\
+(C,1,1) & East \\
+(C,1,0) & East \\
+(C,0,1) & East \\
+(C,0,0) & North or East \\
+(D,0,1) & East \\
+(D,0,0) & North \\
+(E,1,1) & East \\
+(E,1,0) & West \\
+(E,0,1) & East \\
+(E,0,0) & West \\
+(F,1,0) & West \\
+(F,0,0) & West \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{(ii) Living Reward Range for Exactly One Cherry (1 point)}
+
+For A→C→D→B to be better than both:
+\begin{itemize}
+\item Better than A→B: $6 + 3r > 1 + r \Rightarrow r > -2.5$
+\item Better than both cherries: $6 + 3r > 11 + 7r \Rightarrow r < -1.25$
+\end{itemize}
+
+For exactly one cherry: $\boxed{-2.5 < r < -1.25}$
+
+\section{Q2. MDP with Exit Action}
+
+Grid layout:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+A & B \\
+\hline
+D & C \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{(a) Deterministic Actions, $\gamma = \frac{1}{2}$ (1 point)}
+
+Using Bellman equation with deterministic transitions. $V_D = x$. Need to solve system:
+
+Let $V_A, V_B, V_C$ be the values. Then:
+\begin{align*}
+V_A &= 1 + \frac{1}{2}\max(V_B, x) \\
+V_B &= 1 + \frac{1}{2}\max(V_A, V_C) \\
+V_C &= 1 + \frac{1}{2}\max(V_B, x)
+\end{align*}
+
+Since $V_A$ and $V_C$ have same equation, $V_A = V_C = V$. Then:
+$V_B = 1 + \frac{V}{2}$ and $V = 1 + \frac{1}{2}\max(V_B, x) = 1 + \frac{1}{2}\max(1 + \frac{V}{2}, x)$
+
+\textbf{Case 1: $x \leq 2$} → $V = 1 + \frac{1}{2}(1 + \frac{V}{2}) = \frac{3}{2} + \frac{V}{4}$ → $V = 2$
+
+\textbf{Case 2: $x > 2$} → $V = 1 + \frac{x}{2}$ and $V_B = \frac{3}{2} + \frac{x}{4}$
+
+\begin{align}
+\boxed{V^*(D) = x} \\
+\boxed{V^*(A) = V^*(C) = \begin{cases} 2 & \text{if } x \leq 2 \\ 1 + \frac{x}{2} & \text{if } x > 2 \end{cases}} \\
+\boxed{V^*(B) = \begin{cases} 2 & \text{if } x \leq 2 \\ \frac{3}{2} + \frac{x}{4} & \text{if } x > 2 \end{cases}}
+\end{align}
+
+\subsection{(b) Stochastic Actions, Success Probability = $\frac{1}{2}$ (1 point)}
+
+With 50\% success rate, otherwise stay with reward 0. Need new value functions for stochastic case:
+
+Let $V_A^s, V_B^s, V_C^s$ be stochastic values. Then:
+\begin{align*}
+V_A^s &= \max(\frac{1}{2}[1 + \frac{x}{2}] + \frac{1}{4}V_A^s, \frac{1}{2}[1 + \frac{V_B^s}{2}] + \frac{1}{4}V_A^s) \\
+V_B^s &= \max(\frac{1}{2}[1 + \frac{V_A^s}{2}] + \frac{1}{4}V_B^s, \frac{1}{2}[1 + \frac{V_C^s}{2}] + \frac{1}{4}V_B^s) \\
+V_C^s &= \max(\frac{1}{2}[1 + \frac{x}{2}] + \frac{1}{4}V_C^s, \frac{1}{2}[1 + \frac{V_B^s}{2}] + \frac{1}{4}V_C^s)
+\end{align*}
+
+For $Q^*(A;DOWN) = Q^*(A;RIGHT)$:
+$\frac{1}{2} + \frac{x}{4} + \frac{V_A^s}{4} = \frac{1}{2} + \frac{V_B^s}{4} + \frac{V_A^s}{4}$
+
+This simplifies to: $x = V_B^s$
+
+With $V_A^s = V_C^s = V$ and $V_B^s = x$:
+
+From A: $V = \frac{1}{2} + \frac{x}{4} + \frac{V}{4} \Rightarrow \frac{3V}{4} = \frac{1}{2} + \frac{x}{4} \Rightarrow V = \frac{2}{3} + \frac{x}{3}$
+
+From B: $x = \frac{1}{2} + \frac{V}{4} + \frac{x}{4} \Rightarrow \frac{3x}{4} = \frac{1}{2} + \frac{V}{4}$
+
+Substituting: $\frac{3x}{4} = \frac{1}{2} + \frac{1}{4}(\frac{2}{3} + \frac{x}{3}) = \frac{1}{2} + \frac{1}{6} + \frac{x}{12} = \frac{2}{3} + \frac{x}{12}$
+
+Solving: $\frac{3x}{4} - \frac{x}{12} = \frac{2}{3} \Rightarrow \frac{9x - x}{12} = \frac{2}{3} \Rightarrow \frac{8x}{12} = \frac{2}{3} \Rightarrow x = 1$
+
+$\boxed{x = 1}$
+
+\subsection{(c) Modified Bellman Equation with Dice (1 point)}
+
+With dice roll adding 1-6 to reward (expected value = 3.5):
+
+$$\boxed{V_{k+1}(s) = \max_a \sum_{s'} T(s,a,s')[R(s,a,s') + 3.5 + \gamma V_k(s')]}$$
+
+\end{document}
