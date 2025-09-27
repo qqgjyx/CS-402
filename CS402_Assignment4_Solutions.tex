@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+
+\begin{document}
+\section*{COMPSCI 402 Assignment 4 -- Solutions}
+
+\section{Q1. RL}
+Assume $\gamma=1$, $\alpha=\tfrac{1}{2}$, $Q\equiv0$ initially.
+
+\subsection{(a) Tabular Q-learning on samples}
+Process rows in order using $Q(s,a)\leftarrow (1-\alpha)Q(s,a)+\alpha\,[r+\max_{a'}Q(s',a')]$.
+
+\noindent Final requested values:
+\begin{align*}
+Q(C,\text{Stop})&=\boxed{0.5},\\
+Q(C,\text{Go})&=\boxed{1.5}.
+\end{align*}
+
+\subsection{(b) Linear function approximation}
+Features: $f_1(s,a)=1$, $f_2(s,a)=\begin{cases}1,&a=\text{Go}\\-1,&a=\text{Stop}\end{cases}$; $\hat Q(s,a)=w^\top f(s,a)$; update $w\leftarrow w+\alpha\,\delta\,f(s,a)$ with $\delta=r+\gamma\max_{a'}\hat Q(s',a')-\hat Q(s,a)$.
+
+After first sample $(A,\text{Go}\to B, r=4)$: $\boxed{w_1=2,\;w_2=2}$.\\
+After second sample $(B,\text{Stop}\to A, r=0)$: $\boxed{w_1=4,\;w_2=0}$.
+
+\section{Q2. Q-learning}
+Dataset (in order): $(A,\rightarrow,B,2)$, $(C,\leftarrow,B,2)$, $(B,\rightarrow,C,-2)$, $(A,\rightarrow,B,4)$. $\gamma=1$, $\alpha=\tfrac{1}{2}$.
+
+\subsection{(a) Tabular updates}
+\noindent Results:
+\begin{align*}
+Q(A,\rightarrow)&=\boxed{2.5},\quad Q(B,\rightarrow)=\boxed{-0.5}.
+\end{align*}
+
+\noindent Greedy policy $\pi_Q(s)=\arg\max_a Q(s,a)$:
+\[\boxed{\pi_Q(A)=\rightarrow,\; \pi_Q(B)=\leftarrow}.\]
+
+\subsection{(b) Model-based empirical estimates}
+No pseudocounts. From the dataset: $A\xrightarrow{\rightarrow}B$ twice with rewards $2,4$; $B\xrightarrow{\rightarrow}C$ once with $-2$; no $B\xrightarrow{\rightarrow}A$ nor $B\xleftarrow{}A$ observed.
+\[
+\boxed{\hat T(A,\rightarrow,B)=1,\; \hat R(A,\rightarrow,B)=3},\qquad
+\boxed{\hat T(B,\rightarrow,A)=0,\; \hat R(B,\rightarrow,A)=\text{N/A}},\qquad
+\boxed{\hat T(B,\leftarrow,A)=0,\; \hat R(B,\leftarrow,A)=\text{N/A}}.
+\]
+
+\subsection{(c) Properties}
+\noindent (i) Methods sufficient to obtain an optimal policy at convergence (adequate exploration):
+\[\boxed{\text{Model-based learning of }T\;\text{and}\;R\;\text{;}\quad\text{Q-learning to estimate }Q(s,a)}.\]
+\noindent (ii) Exploration policies guaranteeing Q-learning convergence (ergodic MDP, proper $\alpha$):
+\[\boxed{\text{A fixed policy taking actions uniformly at random;}\quad \text{An $\varepsilon$-greedy policy.}}.\]
+
+\section{Q3. Reinforcement Learning}
+Episode repeats; only $C\xrightarrow{\rightarrow}X$ yields reward $1$, all others $0$.
+
+\subsection{(a) Model-based from episode}
+\[\boxed{\hat T(B,\rightarrow,C)=\tfrac{2}{3}},\qquad \boxed{\hat R(C,\rightarrow,X)=1}.\]
+
+\subsection{(b) First nonzero Q after repeated Q-learning (by iteration index shown)}
+Using backpropagation of the nonzero reward at iteration 9 through subsequent updates:
+\[\boxed{Q(A,\rightarrow)\text{ first }\neq 0\text{ at iteration }14},\qquad \boxed{Q(B,\leftarrow)\text{ first }\neq 0\text{ at iteration }22}.\]
+
+\subsection{(c) True/False}
+\begin{itemize}
+\item (i) In Q-learning, you do not learn the model. $\boxed{\text{True}}$.
+\item (ii) For TD Learning, multiplying all rewards by a nonzero scalar $p$ still guarantees the optimal policy. $\boxed{\text{False}}$ (fails for $p<0$).
+\item (iii) In Direct Evaluation, you recalculate state values after each transition. $\boxed{\text{False}}$.
+\item (iv) Q-learning requires samples from the optimal policy to find optimal $Q$. $\boxed{\text{False}}$.
+\end{itemize}
+
+\end{document}
+
+
