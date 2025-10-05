@@ -1,0 +1,152 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+\begin{document}
+\section*{CS 402 -- Assignment 5 Solutions}
+
+\subsection*{Q1. Probability}
+
+\textbf{(a)} $A, B, C$, and $D$ are boolean random variables, and $E$ is a random variable whose domain is $\{e_1, e_2, e_3, e_4, e_5\}$.
+
+\textbf{(i)} Probability table sizes and sums:
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+Table & Size & Sum \\
+\hline
+$P(e \mid B)$ & $1 \times 2 = 2$ & $\boxed{?}$ \\
+$P(A, B \mid c)$ & $2 \times 2 = 4$ & $\boxed{1}$ \\
+$P(A, B \mid C, d, E)$ & $2 \times 2 \times 2 \times 1 \times 5 = 40$ & $\boxed{10}$ \\
+$P(a, E \mid B, C)$ & $1 \times 5 \times 2 \times 2 = 20$ & $\boxed{4}$ \\
+$P(A, c, E)$ & $2 \times 1 \times 5 = 10$ & $\boxed{1}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{Justification:} For each conditional probability table, sum over all conditioning variables equals 1 for each conditioning assignment.
+
+\textbf{(ii)} Minimum parameters for $P(A, B \mid C, d, E)$: $2 \times 2 - 1 = 3$ parameters per conditioning assignment. Total: $\boxed{30}$ parameters.
+
+\textbf{(iii)} Minimum parameters for $P(a, E \mid B, C)$: $5 - 1 = 4$ parameters per conditioning assignment. Total: $\boxed{16}$ parameters.
+
+\textbf{(b)} Simplifying expressions:
+
+\textbf{(i)} $\sum_{a'} P(a' \mid B, E) P(c \mid a', B, E)$
+
+\textbf{Answer:} $\boxed{P(c \mid B, E)}$
+
+\textbf{Justification:} By the law of total probability: $\sum_{a'} P(a' \mid B, E) P(c \mid a', B, E) = P(c \mid B, E)$
+
+\textbf{(ii)} $\frac{\sum_{a'} P(B \mid a', C) P(a' \mid C) P(C)}{\sum_{d', e'} P(d' \mid e', C) P(e' \mid C) P(C)}$
+
+\textbf{Answer:} $\boxed{\frac{P(B, C)}{P(C)} = P(B \mid C)}$
+
+\textbf{Justification:} 
+- Numerator: $\sum_{a'} P(B \mid a', C) P(a' \mid C) P(C) = \sum_{a'} P(B, a' \mid C) P(C) = P(B \mid C) P(C) = P(B, C)$
+- Denominator: $\sum_{d', e'} P(d' \mid e', C) P(e' \mid C) P(C) = \sum_{d', e'} P(d', e' \mid C) P(C) = P(C)$
+- Result: $\frac{P(B, C)}{P(C)} = P(B \mid C)$
+
+\subsection*{Q2. Probability}
+
+\textbf{(a)} Expressions equivalent to $P(A \mid B, C)$:
+
+\begin{itemize}
+\item $\sum_d P(A \mid B, C, D = d)$ - \textbf{Incorrect} (should be weighted by $P(D = d \mid B, C)$)
+\item $\sum_d P(A, D = d \mid B, C)$ - \textbf{Correct} (marginalization)
+\item $P(A \mid B) P(A \mid C)$ - \textbf{Incorrect} (only true if $A \perp\!\!\!\perp B \mid C$ and $A \perp\!\!\!\perp C \mid B$)
+\item $P(A \mid C)$ - \textbf{Incorrect} (ignores $B$)
+\item $P(A \mid B) P(B \mid C)$ - \textbf{Incorrect} (chain rule gives $P(A, B \mid C)$)
+\item $P(A \mid C) P(C \mid B)$ - \textbf{Incorrect} (chain rule gives $P(A, C \mid B)$)
+\item $\frac{P(A, B, C)}{P(B, C)}$ - \textbf{Correct} (definition of conditional probability)
+\item $\frac{P(A) P(B \mid A) P(C \mid A, B)}{P(C) P(B \mid C)}$ - \textbf{Correct} (Bayes' rule application)
+\end{itemize}
+
+\textbf{Answers:} $\boxed{\sum_d P(A, D = d \mid B, C)}$, $\boxed{\frac{P(A, B, C)}{P(B, C)}}$, $\boxed{\frac{P(A) P(B \mid A) P(C \mid A, B)}{P(C) P(B \mid C)}}$
+
+\textbf{(b)} Given $A \perp\!\!\!\perp B$, expressions equivalent to $P(A \mid B, C)$:
+
+\begin{itemize}
+\item $\sum_d P(A \mid B, C, D = d)$ - \textbf{Incorrect} (should be weighted by $P(D = d \mid B, C)$)
+\item $\sum_d P(A, D = d \mid B, C)$ - \textbf{Correct} (marginalization)
+\item $P(A \mid B) P(A \mid C)$ - \textbf{Incorrect} (only true if $A \perp\!\!\!\perp C \mid B$)
+\item $P(A \mid C)$ - \textbf{Correct} (since $A \perp\!\!\!\perp B$)
+\item $P(A \mid B) P(B \mid C)$ - \textbf{Incorrect} (chain rule gives $P(A, B \mid C)$)
+\item $P(A \mid C) P(C \mid B)$ - \textbf{Incorrect} (chain rule gives $P(A, C \mid B)$)
+\item $\frac{P(A, B, C)}{P(B, C)}$ - \textbf{Correct} (definition of conditional probability)
+\item $\frac{P(A) P(B \mid A) P(C \mid A, B)}{P(C) P(B \mid C)}$ - \textbf{Correct} (Bayes' rule application)
+\end{itemize}
+
+\textbf{Answers:} $\boxed{\sum_d P(A, D = d \mid B, C)}$, $\boxed{P(A \mid C)}$, $\boxed{\frac{P(A, B, C)}{P(B, C)}}$, $\boxed{\frac{P(A) P(B \mid A) P(C \mid A, B)}{P(C) P(B \mid C)}}$
+
+\textbf{(c)} Given $B \perp\!\!\!\perp C \mid A$, expressions equivalent to $P(A \mid B, C)$:
+
+\begin{itemize}
+\item $\sum_d P(A \mid B, C, D = d)$ - \textbf{Incorrect} (should be weighted by $P(D = d \mid B, C)$)
+\item $\sum_d P(A, D = d \mid B, C)$ - \textbf{Correct} (marginalization)
+\item $P(A \mid B) P(A \mid C)$ - \textbf{Incorrect} (only true if $A \perp\!\!\!\perp C \mid B$)
+\item $P(A \mid C)$ - \textbf{Incorrect} (ignores $B$)
+\item $P(A \mid B) P(B \mid C)$ - \textbf{Incorrect} (chain rule gives $P(A, B \mid C)$)
+\item $P(A \mid C) P(C \mid B)$ - \textbf{Incorrect} (chain rule gives $P(A, C \mid B)$)
+\item $\frac{P(A, B, C)}{P(B, C)}$ - \textbf{Correct} (definition of conditional probability)
+\item $\frac{P(A) P(B \mid A) P(C \mid A, B)}{P(C) P(B \mid C)}$ - \textbf{Correct} (with $B \perp\!\!\!\perp C \mid A$, becomes $\frac{P(A) P(B \mid A) P(C \mid A)}{P(B, C)} = \frac{P(A, B, C)}{P(B, C)}$)
+\end{itemize}
+
+\textbf{Answers:} $\boxed{\sum_d P(A, D = d \mid B, C)}$, $\boxed{\frac{P(A, B, C)}{P(B, C)}}$, $\boxed{\frac{P(A) P(B \mid A) P(C \mid A, B)}{P(C) P(B \mid C)}}$
+
+\textbf{(d)} Universal equalities for any distribution over $A, B, C, D$:
+
+\begin{itemize}
+\item $P(A, B \mid C, D) = P(A \mid C, D) P(B \mid A, C, D)$ - \textbf{Correct} (chain rule)
+\item $P(A, B) = P(A, B \mid C, D) P(C, D)$ - \textbf{Incorrect} (should be weighted)
+\item $P(A, B \mid C, D) = P(A, B) P(C, D) P(C, D \mid A, B)$ - \textbf{Incorrect} (incorrect application)
+\item $P(A, B \mid C, D) = P(A, B) P(D) P(C, D \mid A, B)$ - \textbf{Incorrect} (incorrect application)
+\end{itemize}
+
+\textbf{Answer:} Only $\boxed{P(A, B \mid C, D) = P(A \mid C, D) P(B \mid A, C, D)}$ holds universally.
+
+\subsection*{Q3. Bayes' Nets Representation and Probability}
+
+Bayes' Net: $G \to A$, $B$, $A, B \to S$
+
+Given tables:
+\begin{align}
+P(+g) &= 0.1, \quad P(-g) = 0.9 \\
+P(+a \mid +g) &= 1.0, \quad P(+a \mid -g) = 0.1 \\
+P(+b) &= 0.4, \quad P(-b) = 0.6 \\
+P(+s \mid +a, +b) &= 1.0, \quad P(+s \mid +a, -b) = 0.9 \\
+P(+s \mid -a, +b) &= 0.8, \quad P(+s \mid -a, -b) = 0.1
+\end{align}
+
+\textbf{(a)} $P(+g, +a, +b, +s)$:
+
+$P(+g, +a, +b, +s) = P(+g) \cdot P(+a \mid +g) \cdot P(+b) \cdot P(+s \mid +a, +b)$
+$= 0.1 \times 1.0 \times 0.4 \times 1.0 = \boxed{0.04}$
+
+\textbf{(b)} $P(+a)$:
+
+$P(+a) = P(+a \mid +g) P(+g) + P(+a \mid -g) P(-g) = 1.0 \times 0.1 + 0.1 \times 0.9 = 0.1 + 0.09 = \boxed{0.19}$
+
+\textbf{(c)} $P(+a \mid +b)$:
+
+$P(+a \mid +b) = \frac{P(+a, +b)}{P(+b)} = \frac{P(+a) P(+b)}{P(+b)} = P(+a) = \boxed{0.19}$
+
+\textbf{(d)} $P(+a \mid +s, +b)$:
+
+Using Bayes' rule:
+$P(+a \mid +s, +b) = \frac{P(+s \mid +a, +b) P(+a \mid +b)}{P(+s \mid +b)}$
+
+$P(+s \mid +b) = \sum_{a} P(+s \mid a, +b) P(a \mid +b) = P(+s \mid +a, +b) P(+a \mid +b) + P(+s \mid -a, +b) P(-a \mid +b)$
+$= 1.0 \times 0.19 + 0.8 \times 0.81 = 0.19 + 0.648 = 0.838$
+
+$P(+a \mid +s, +b) = \frac{1.0 \times 0.19}{0.838} = \frac{0.19}{0.838} \approx \boxed{0.227}$
+
+\textbf{(e)} $P(+g \mid +a)$:
+
+Using Bayes' rule:
+$P(+g \mid +a) = \frac{P(+a \mid +g) P(+g)}{P(+a)} = \frac{1.0 \times 0.1}{0.19} = \frac{0.1}{0.19} \approx \boxed{0.526}$
+
+\end{document}
