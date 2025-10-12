@@ -1,0 +1,348 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{COMPSCI 402 – Artificial Intelligence\\
+Final Report\\
+The Development and Outlook of AI Techniques in the field of Neuroscience
+}
+
+\author{\IEEEauthorblockN{Juntang Wang}
+\IEEEauthorblockA{jw853@duke.edu}
+}
+
+\maketitle
+
+\begin{abstract}
+Artificial Intelligence has transformed how we analyze neural data and model brain function. This report looks at how AI advances neuroscience through neural decoding, disease diagnosis, and generative models, while neuroscience inspires new AI architectures in return. We present a taxonomy of AI applications in neuroscience, analyzing representative methods and their tradeoffs. The field still faces major challenges around interpretability, integrating multimodal data, and developing energy-efficient neuromorphic systems—issues that will likely shape progress in the coming years.
+\end{abstract}
+
+
+%
+%
+%
+\section{Introduction}
+
+The intersection of Artificial Intelligence and neuroscience has become one of the most exciting areas in modern science. What started as simple attempts to model neural networks has evolved into a rich, bidirectional relationship—AI helps us understand the brain, while neuroscience drives new AI innovations \citep{onciulArtificialIntelligenceNeuroscience2025, hassabisNeuroscienceinspiredArtificialIntelligence2017}. This synergy is changing how we think about both biological and artificial intelligence.
+
+Deep learning has accelerated this relationship dramatically. Neural networks can now model brain responses across multiple scales with surprising accuracy \citep{kietzmannDeepNeuralNetworks2019}. Convolutional neural networks have transformed neuroimaging analysis, achieving near-expert performance in detecting neurological disorders \citep{litjensSurveyDeepLearning2017}. Meanwhile, recurrent networks and transformers have opened new possibilities for decoding neural signals and capturing the temporal dynamics of brain activity \citep{lawhernEEGNetCompactConvolutional2018}.
+
+Today's AI-neuroscience collaboration spans three main directions. First, researchers use AI to decode brain states and analyze neural signals, which enables brain-computer interfaces and neural reconstruction \citep{lawhernEEGNetCompactConvolutional2018, mathisDecodingBrainNeural2024}. Second, AI is transforming medical diagnosis, especially for neuroimaging and disease classification where accuracy really matters \citep{hechkelEarlyDetectionClassification2025, shamratAlzheimerNetEffectiveDeep2023}. Third, neuroscience keeps inspiring new AI designs—like spiking neural networks and neuromorphic chips that mimic how biological brains actually work \citep{daviesLoihiNeuromorphicManycore2018}.
+
+But significant challenges remain. Neural data is inherently complex—it spans scales from individual neurons to whole-brain networks, making computational analysis quite difficult \citep{onciulArtificialIntelligenceNeuroscience2025}. Combining different data types like neuroimaging, electrophysiology, and behavioral measurements requires AI systems that can handle heterogeneous inputs while staying interpretable \citep{lorenziIntegrationMultimodalData2023}. Beyond technical hurdles, there are deeper questions about intelligence and consciousness that push both fields toward better frameworks for ethical collaboration \citep{hassabisNeuroscienceinspiredArtificialIntelligence2017}.
+
+Generative AI has also opened interesting new directions. GANs and variational autoencoders can simulate neural activity and predict brain responses, which helps us understand how the brain works while building more biologically realistic AI systems \citep{gucluDeepNeuralNetworks2015, onciulArtificialIntelligenceNeuroscience2025}.
+
+Data quality presents another obstacle. Neural recordings are noisy, high-dimensional, and vary considerably between individuals \citep{richardsDeepLearningFramework2019}. Moving these AI tools into clinical practice raises practical concerns about reliability and interpretability—doctors need to trust and understand the systems they use \citep{hassabisNeuroscienceinspiredArtificialIntelligence2017}.
+
+This report addresses these challenges by providing a comprehensive analysis of current AI techniques in neuroscience, examining both their capabilities and limitations across multiple application domains. We focus specifically on three key areas: neural decoding and brain-computer interfaces, AI applications in neurological disease diagnosis, and neuroscience-inspired AI architectures. Our scope encompasses both the technical achievements that have enabled these applications and the theoretical insights that have emerged from this interdisciplinary work, with particular emphasis on recent advances that have shaped the field over the past five years.
+
+The rest of this report is organized as follows. Section II reviews related work and establishes historical context. Section III presents our taxonomy of AI in neuroscience and describes representative methods across different applications. Section IV analyzes results and performance comparisons. Section V discusses key challenges and future directions. Section VI concludes with main findings and their implications.
+
+Our analysis draws on recent advances in deep learning for neural signal processing \citep{lawhernEEGNetCompactConvolutional2018}, computational models of brain function \citep{gucluDeepNeuralNetworks2015}, emerging applications in clinical neuroscience \citep{hechkelEarlyDetectionClassification2025}, and foundational work in neuroscience-inspired AI \citep{hassabisNeuroscienceinspiredArtificialIntelligence2017}.
+
+\section{Related Work}
+
+The intersection of artificial intelligence and neuroscience has evolved through several distinct phases, each marked by technological advances and shifts in our understanding of both biological and artificial neural systems. This section reviews the historical development of the field, highlighting key milestones that laid the foundation for current research.
+
+The relationship between AI and neuroscience goes back to the early development of artificial neural networks, which were inspired by biological neural processing \citep{LeCun:2015pmr}. The perceptron model in the 1950s was one of the first attempts to model biological neural computation. But it wasn't until the 1980s, with backpropagation algorithms, that artificial neural networks started showing practical capabilities for pattern recognition and learning.
+
+The 1990s and early 2000s were more about consolidation and refinement. Researchers explored more sophisticated architectures that could better approximate biological neural processing. The development of convolutional neural networks (CNNs) was a major milestone—these architectures were directly inspired by the hierarchical organization of the visual cortex \citep{gucluDeepNeuralNetworks2015}. This period also saw recurrent neural networks (RNNs) emerge, attempting to capture the temporal dynamics of biological systems.
+
+The resurgence of interest in neural networks, commonly referred to as the "deep learning revolution," began around 2012 with the success of AlexNet in the ImageNet competition \citep{litjensSurveyDeepLearning2017}. This breakthrough demonstrated that deep neural networks could achieve superhuman performance on complex visual recognition tasks, reigniting interest in the relationship between artificial and biological neural systems. The success of deep learning led to a renewed focus on understanding how these artificial systems might inform our understanding of biological neural processing.
+
+During this period, researchers began to systematically compare artificial and biological neural representations, using techniques such as representational similarity analysis to quantify the correspondence between artificial and biological neural responses \citep{gucluDeepNeuralNetworks2015}. These studies revealed that deep neural networks could serve as effective models of biological neural processing, particularly in the visual system, where they demonstrated remarkable correspondence with neural responses in the ventral visual pathway.
+
+The success of deep learning in modeling biological neural systems led to a reciprocal influence, with neuroscience beginning to inspire new AI architectures and learning paradigms. One notable example is the development of attention mechanisms, which were inspired by the selective attention processes observed in biological neural systems. The transformer architecture, which relies heavily on attention mechanisms, has since become one of the most successful AI architectures, demonstrating the potential for neuroscience-inspired innovations in AI.
+
+Another significant development has been the emergence of spiking neural networks (SNNs), which attempt to more faithfully model the temporal dynamics of biological neural systems \citep{bellecLongShorttermMemory2018}. These networks use discrete spike events rather than continuous activations, potentially offering advantages in terms of energy efficiency and biological plausibility. The development of neuromorphic hardware, such as Intel's Loihi processor, has further advanced the practical implementation of these biologically-inspired systems \citep{daviesLoihiNeuromorphicManycore2018}.
+
+Recent years have seen the application of AI techniques to a wide range of neuroscience problems, from neural signal processing to disease diagnosis. In neural decoding, deep learning approaches have demonstrated remarkable success in reconstructing visual experiences from brain activity \citep{mathisDecodingBrainNeural2024} and in developing brain-computer interfaces for motor control \citep{lawhernEEGNetCompactConvolutional2018}. These applications have opened new possibilities for understanding neural representation and developing assistive technologies.
+
+In medical applications, AI has shown particular promise in neuroimaging analysis, where deep learning approaches have achieved expert-level performance in tasks such as brain tumor detection and neurological disease classification \citep{hechkelEarlyDetectionClassification2025}. The application of AI to Alzheimer's disease detection has been particularly successful, with deep learning models achieving high accuracy in early diagnosis \citep{shamratAlzheimerNetEffectiveDeep2023}.
+
+Despite these advances, the field continues to face significant challenges. The complexity of neural data, spanning multiple scales from single neurons to entire brain networks, presents ongoing computational and analytical challenges \citep{onciulArtificialIntelligenceNeuroscience2025}. The integration of multimodal neural data, including neuroimaging, electrophysiology, and behavioral measures, remains a significant technical challenge that requires sophisticated AI approaches \citep{lorenziIntegrationMultimodalData2023}.
+
+While the field has made remarkable progress, several important gaps remain. First, most current AI approaches in neuroscience focus on specific tasks or brain regions, with limited success in developing unified models that can capture the complexity of entire brain systems. Second, the interpretability of AI models remains a significant challenge, particularly in clinical applications where understanding the basis of AI decisions is crucial for clinical acceptance and regulatory approval \citep{sadeghiReviewExplainableArtificial2024}.
+
+Third, the generalizability of AI models across different individuals, populations, and experimental conditions remains limited. This challenge is particularly acute in neuroscience, where individual differences in brain structure and function can significantly impact model performance. Finally, the ethical implications of AI applications in neuroscience, particularly in areas such as brain-computer interfaces and neural enhancement, require careful consideration and ongoing dialogue between researchers, clinicians, and ethicists \citep{gordonEthicalConsiderationsUse2024}.
+
+This historical review establishes the foundation for understanding current developments in AI-neuroscience integration. The following sections will examine specific methodological approaches, applications, and challenges that characterize the current state of this interdisciplinary field.
+
+\section{Methodology}
+
+This section presents a taxonomy of AI applications in neuroscience, categorizing approaches by their primary function and methodology. We examine representative methods across different domains, analyzing their strengths, limitations, and performance.
+
+\subsection{Taxonomy of AI in Neuroscience}
+
+AI techniques in neuroscience fall into three primary categories: (1) neural decoding and brain-computer interfaces, (2) disease diagnosis and neuroimaging analysis, and (3) neuroscience-inspired AI architectures. Each category has multiple subcategories with distinct approaches and applications.
+
+\subsection{Neural Decoding and Brain-Computer Interfaces}
+
+Neural decoding is one of the most direct applications of AI in neuroscience—it focuses on extracting meaningful information from neural signals to understand brain function and enable brain-computer communication.
+
+\subsubsection{Electroencephalography-Based Approaches}
+
+EEG-based brain-computer interfaces have benefited significantly from deep learning approaches. EEGNet, a compact convolutional network specifically designed for EEG-based BCIs, has demonstrated remarkable success across multiple paradigms including P300 visual-evoked potentials, error-related negativity responses, and sensory motor rhythms \citep{lawhernEEGNetCompactConvolutional2018}. The architecture employs depthwise and separable convolutions to encapsulate well-known EEG feature extraction concepts while maintaining computational efficiency.
+
+Recent advances in transformer architectures have also been applied to neural signal processing, enabling better modeling of temporal dependencies in neural data. These approaches have shown particular promise in decoding complex cognitive states and motor intentions from EEG signals, opening new possibilities for assistive technologies and neurorehabilitation applications.
+
+\subsubsection{Neuroimaging-Based Decoding}
+
+Functional magnetic resonance imaging (fMRI) has provided rich opportunities for neural decoding applications. Deep neural networks have been successfully employed to reconstruct visual experiences from brain activity, demonstrating remarkable correspondence between artificial and biological neural representations \citep{mathisDecodingBrainNeural2024}. These approaches utilize motion-energy encoding models that separate fast visual information from slow hemodynamic responses, enabling accurate reconstruction of viewed movies from brain activity.
+
+The integration of multimodal neuroimaging data, including structural and functional MRI, has further enhanced decoding capabilities. Advanced machine learning approaches can now extract meaningful patterns from complex brain imaging data, providing insights into cognitive processes and neural representation.
+
+\subsubsection{Spiking Neural Networks}
+
+Spiking neural networks represent a biologically-inspired approach to neural decoding that more faithfully models the temporal dynamics of biological neural systems. SuperSpike, a supervised learning algorithm for multilayer spiking neural networks, has demonstrated the ability to train networks of integrate-and-fire neurons to perform nonlinear computations on spatiotemporal spike patterns \citep{zenkeSuperSpikeSupervisedLearning2018}.
+
+Long short-term memory networks in spiking neurons have shown particular promise for learning-to-learn scenarios, addressing the challenge of poor computational capabilities in traditional spiking network models \citep{bellecLongShorttermMemory2018}. These approaches utilize backpropagation through time to approximate the optimization processes that occur during evolution and development in biological neural systems.
+
+\subsection{Disease Diagnosis and Neuroimaging Analysis}
+
+AI has revolutionized medical diagnosis in neuroscience, particularly in the analysis of neuroimaging data for disease detection and classification.
+
+\subsubsection{Alzheimer's Disease Detection}
+
+Deep learning approaches have achieved exceptional performance in Alzheimer's disease detection and classification. AlzheimerNet, a fine-tuned convolutional neural network, can identify all five stages of Alzheimer's disease plus normal controls with 98.67\% accuracy \citep{shamratAlzheimerNetEffectiveDeep2023}. The model utilizes data augmentation and CLAHE image enhancement to handle the unbalanced nature of MRI datasets, demonstrating the power of AI in early disease detection.
+
+More recently, YOLOv11 neural networks have been applied to Alzheimer's disease classification through multimodal data fusion of MRI and DTI images \citep{hechkelEarlyDetectionClassification2025}. This approach achieved 93.6\% precision, 91.6\% recall, and 96.7\% mAP50, highlighting the potential for object detection architectures in medical imaging applications.
+
+\subsubsection{General Neuroimaging Analysis}
+
+Machine learning approaches have transformed neuroimaging analysis across multiple domains. Deep learning algorithms, particularly convolutional neural networks, have become the methodology of choice for analyzing medical images \citep{litjensSurveyDeepLearning2017}. These approaches have been successfully applied to image classification, object detection, segmentation, and registration tasks across various neuroimaging modalities.
+
+The integration of multimodal neuroimaging data presents unique challenges and opportunities. Advanced machine learning techniques can now handle heterogeneous data types including neuroimaging, electrophysiology, and behavioral measures, enabling comprehensive analysis of brain function and dysfunction \citep{lorenziIntegrationMultimodalData2023}.
+
+\subsection{Neuroscience-Inspired AI Architectures}
+
+The bidirectional influence between AI and neuroscience has led to the development of novel AI architectures that incorporate principles from biological neural systems.
+
+\subsubsection{Deep Neural Networks as Brain Models}
+
+Deep neural networks have proven remarkably effective at modeling neural responses and extracting meaningful patterns from neural data. Studies have demonstrated explicit gradients for feature complexity in the ventral visual pathway using deep convolutional neural networks \citep{gucluDeepNeuralNetworks2015}. These approaches allow stimulus features of increasing complexity to be mapped across the human brain, providing automated methods for probing neural representations.
+
+The increasing complexity of neural representations across the brain's dorsal stream has been systematically characterized using deep neural networks trained for action recognition \citep{gucluDeepNeuralNetworks2015}. These studies reveal that dorsal stream representations are shared between subjects, suggesting common underlying computational principles.
+
+\subsubsection{Neuromorphic Computing}
+
+Neuromorphic computing represents a hardware approach to neuroscience-inspired AI, implementing neural network algorithms in specialized silicon chips. Intel's Loihi processor, a neuromorphic manycore processor with on-chip learning, has demonstrated over three orders of magnitude superior energy-delay-product compared to conventional CPU-based solvers \citep{daviesLoihiNeuromorphicManycore2018}. The chip integrates hierarchical connectivity, dendritic compartments, synaptic delays, and programmable synaptic learning rules, providing an unambiguous example of spike-based computation.
+
+\subsubsection{Network Neuroscience Approaches}
+
+Network neuroscience has emerged as a powerful framework for understanding brain function through graph-theoretic analysis of neural connectivity. This approach tackles the challenge of discovering principles underlying complex brain function and cognition from an integrative perspective \citep{bassettNetworkNeuroscience2017}. Network-based approaches enable the analysis of brain connectivity patterns across multiple scales, from local circuits to global brain networks.
+
+The application of network neuroscience principles to AI has led to the development of brain-inspired learning algorithms that incorporate structural and functional connectivity patterns observed in biological neural systems. These approaches offer potential advantages in terms of biological plausibility and computational efficiency.
+
+\subsection{Methodological Considerations}
+
+Several key methodological considerations emerge from this taxonomy. First, the choice of AI approach depends critically on the specific neuroscience application, data modality, and computational constraints. Second, the integration of multimodal data requires sophisticated approaches that can handle heterogeneous data types while maintaining interpretability. Third, the validation of AI models in neuroscience applications requires careful consideration of biological plausibility and clinical relevance.
+
+The development of standardized evaluation metrics and benchmark datasets remains crucial for advancing the field. Additionally, the interpretability of AI models is particularly important in clinical applications, where understanding the basis of AI decisions is essential for clinical acceptance and regulatory approval.
+
+\section{Results}
+
+This section provides comprehensive analysis of AI techniques in neuroscience, examining performance across different application domains and identifying key trends and limitations in current approaches.
+
+\subsection{Performance Analysis of Neural Decoding Approaches}
+
+Neural decoding applications have demonstrated remarkable success across multiple modalities and paradigms. EEG-based brain-computer interfaces using EEGNet have shown superior generalization across paradigms compared to traditional approaches, particularly when limited training data is available \citep{lawhernEEGNetCompactConvolutional2018}. The compact architecture, utilizing depthwise and separable convolutions, achieves comparable performance to more complex models while maintaining computational efficiency.
+
+In neuroimaging-based decoding, deep neural networks have achieved unprecedented accuracy in reconstructing visual experiences from brain activity. Motion-energy encoding models have successfully reconstructed viewed movies from fMRI data, demonstrating the power of AI approaches in understanding neural representation \citep{mathisDecodingBrainNeural2024}. These results indicate that AI can serve as an effective tool for probing the relationship between neural activity and conscious experience.
+
+Spiking neural networks have shown particular promise in biologically plausible neural decoding. SuperSpike has demonstrated the ability to train multilayer networks of integrate-and-fire neurons to perform nonlinear computations on spatiotemporal spike patterns \citep{zenkeSuperSpikeSupervisedLearning2018}. Long short-term memory networks in spiking neurons have addressed the challenge of poor computational capabilities in traditional spiking models, showing significant improvements in learning-to-learn scenarios \citep{bellecLongShorttermMemory2018}.
+
+\subsection{Disease Diagnosis and Classification Performance}
+
+AI approaches have achieved exceptional performance in neurological disease diagnosis, particularly in Alzheimer's disease detection. AlzheimerNet, a fine-tuned convolutional neural network, achieved 98.67\% accuracy in classifying all five stages of Alzheimer's disease plus normal controls \citep{shamratAlzheimerNetEffectiveDeep2023}. This performance significantly exceeds traditional diagnostic approaches and demonstrates the potential for AI-assisted early disease detection.
+
+More recently, YOLOv11 neural networks applied to multimodal data fusion of MRI and DTI images achieved 93.6\% precision, 91.6\% recall, and 96.7\% mAP50 in Alzheimer's disease classification \citep{hechkelEarlyDetectionClassification2025}. These results highlight the effectiveness of object detection architectures in medical imaging applications and the benefits of multimodal data integration.
+
+Deep learning approaches have become the methodology of choice for analyzing medical images, with convolutional neural networks achieving expert-level performance across multiple neuroimaging tasks \citep{litjensSurveyDeepLearning2017}. The integration of multimodal neuroimaging data has further enhanced diagnostic capabilities, enabling comprehensive analysis of brain function and dysfunction through advanced machine learning techniques \citep{lorenziIntegrationMultimodalData2023}.
+
+\subsection{Neuroscience-Inspired AI Architecture Performance}
+
+Neuroscience-inspired AI architectures have demonstrated significant advances in both biological plausibility and computational efficiency. Deep neural networks have proven remarkably effective at modeling neural responses, with studies demonstrating explicit gradients for feature complexity in the ventral visual pathway \citep{gucluDeepNeuralNetworks2015}. These approaches enable automated mapping of stimulus features across the human brain, providing unprecedented insights into neural representation.
+
+The characterization of neural representations across the brain's dorsal stream using deep neural networks has revealed shared representations between subjects \citep{gucluDeepNeuralNetworks2015}. These findings suggest common underlying computational principles and provide evidence for the biological relevance of AI approaches in understanding brain function.
+
+Neuromorphic computing has demonstrated exceptional energy efficiency compared to traditional approaches. Intel's Loihi processor has shown over three orders of magnitude superior energy-delay-product compared to conventional CPU-based solvers \citep{daviesLoihiNeuromorphicManycore2018}. This performance advantage, combined with the biological plausibility of spiking neural networks, positions neuromorphic computing as a promising approach for future AI systems.
+
+Network neuroscience approaches have provided powerful frameworks for understanding brain function through graph-theoretic analysis \citep{bassettNetworkNeuroscience2017}. The application of these principles to AI has led to the development of brain-inspired learning algorithms that incorporate structural and functional connectivity patterns observed in biological neural systems.
+
+\subsection{Comparative Analysis Across Application Domains}
+
+The analysis reveals distinct performance characteristics across different application domains. Neural decoding approaches show strong performance in controlled experimental settings but face challenges in real-world applications due to individual variability and environmental factors. Disease diagnosis applications demonstrate exceptional accuracy in controlled datasets but require validation across diverse populations and clinical settings.
+
+Neuroscience-inspired AI architectures show promise in terms of biological plausibility and energy efficiency but often lag behind traditional approaches in absolute performance on specific tasks. This trade-off highlights the ongoing tension between biological realism and computational efficiency in AI design.
+
+The integration of multimodal data presents both opportunities and challenges. While multimodal approaches often achieve superior performance compared to single-modality methods, they require sophisticated data fusion techniques and face increased computational complexity. The development of standardized evaluation metrics and benchmark datasets remains crucial for fair comparison across different approaches.
+
+\subsection{Key Performance Trends}
+
+Several key trends emerge from the analysis of AI techniques in neuroscience. First, deep learning approaches consistently outperform traditional machine learning methods across multiple application domains. Second, multimodal data integration provides significant performance improvements when properly implemented. Third, neuroscience-inspired architectures show particular promise in terms of energy efficiency and biological plausibility, though they may require different evaluation criteria.
+
+Fourth, the generalizability of AI models remains a significant challenge, with performance often degrading when applied to new populations or experimental conditions. Fifth, the interpretability of AI models is increasingly recognized as crucial for clinical applications, driving research into explainable AI approaches.
+
+Finally, the integration of AI approaches into clinical workflows requires careful consideration of regulatory requirements, ethical implications, and practical implementation challenges. The development of standardized protocols and validation frameworks remains essential for translating research advances into clinical practice.
+
+\section{Discussion}
+
+This section interprets the results and discusses their broader implications for AI and neuroscience. We examine key challenges, emerging opportunities, and future directions that will likely shape the field.
+
+\subsection{Key Challenges in AI-Neuroscience Integration}
+
+Despite remarkable advances, several critical challenges remain. Neural data complexity—spanning from single neurons to entire brain networks—presents ongoing computational challenges \citep{onciulArtificialIntelligenceNeuroscience2025}. Current AI approaches often struggle to capture the full complexity of biological systems, which limits their usefulness as comprehensive models of brain function.
+
+Integrating multimodal neural data is another major challenge. Neural data comes in diverse forms—neuroimaging, electrophysiology, behavioral measures—each with distinct characteristics and noise profiles \citep{lorenziIntegrationMultimodalData2023}. Developing AI that can effectively integrate these different data types while maintaining interpretability remains an active research area.
+
+Interpretability is a pressing challenge, especially in clinical settings where understanding how AI makes decisions is crucial for acceptance and regulatory approval \citep{sadeghiReviewExplainableArtificial2024}. The "black box" nature of many deep learning approaches limits their clinical utility and raises questions about reliability and trustworthiness in medical decisions.
+
+The generalizability of AI models across different individuals, populations, and experimental conditions remains limited. Individual differences in brain structure and function can significantly impact model performance, highlighting the need for personalized approaches that can adapt to individual characteristics \citep{johnsonPrecisionMedicineAI2021}. This challenge is particularly acute in neuroscience applications where biological variability is inherent to the system.
+
+\subsection{Ethical Considerations and Societal Implications}
+
+The integration of AI and neuroscience raises important ethical issues that go beyond technical challenges. Brain-computer interfaces and neural enhancement technologies raise fundamental questions about privacy, autonomy, and human identity \citep{gordonEthicalConsiderationsUse2024}. The ability to decode neural signals and potentially influence brain function requires careful consideration of ethical implications and societal impact.
+
+The potential for cognitive enhancement through AI raises questions about fairness, equality, and what we consider human intelligence. As AI systems get better at interfacing with and augmenting human cognitive capabilities, society needs to grapple with who has access to these technologies and how they should be regulated.
+
+Using AI in clinical neuroscience also raises questions about informed consent, data privacy, and AI's role in medical decision-making. Patients and clinicians need to understand AI capabilities and limitations to make informed decisions about its use in clinical care.
+
+\subsection{Emerging Opportunities and Future Directions}
+
+Despite these challenges, the integration of AI and neuroscience presents unprecedented opportunities for advancing both fields. The development of more sophisticated AI architectures inspired by biological neural systems promises to yield both better models of brain function and more efficient computational systems \citep{schmidgallBraininspiredLearningArtificial2024}.
+
+The application of AI to large-scale neural datasets has the potential to reveal new insights into brain function that would be impossible to discover through traditional approaches alone. Machine learning approaches can identify patterns in neural data that are not apparent to human observers, potentially leading to new hypotheses about brain function and dysfunction.
+
+The development of real-time neural decoding systems opens new possibilities for brain-computer interfaces and neurorehabilitation applications. AI systems that can accurately decode neural signals in real-time could enable new forms of communication and control for individuals with neurological disabilities \citep{zhangBrainComputerInterfaces2024}.
+
+The integration of AI with emerging neurotechnologies, such as optogenetics and brain stimulation, presents opportunities for closed-loop systems that can adaptively respond to neural states. These systems could enable new approaches to treating neurological disorders and understanding brain function.
+
+\subsection{Technological Convergence and Interdisciplinary Collaboration}
+
+The convergence of AI and neuroscience is driving technological advances that extend beyond either field alone. Neuromorphic computing, which implements neural network algorithms in specialized hardware inspired by biological neural systems, represents one example of this convergence \citep{daviesLoihiNeuromorphicManycore2018}. These systems offer significant advantages in terms of energy efficiency and biological plausibility compared to traditional computing approaches.
+
+The development of brain-inspired learning algorithms that incorporate principles from neuroscience promises to yield AI systems that are both more efficient and more biologically plausible \citep{schmidgallBraininspiredLearningArtificial2024}. These approaches could lead to new insights into the nature of learning and intelligence in both biological and artificial systems.
+
+The integration of AI with network neuroscience approaches provides new tools for understanding brain connectivity and function \citep{bassettNetworkNeuroscience2017}. Graph-theoretic analysis of neural connectivity, combined with machine learning approaches, can reveal new insights into how brain networks support cognitive function and how they break down in disease.
+
+\subsection{Clinical Translation and Implementation Challenges}
+
+The translation of AI advances in neuroscience into clinical practice presents unique challenges that require careful consideration. Clinical implementation requires validation across diverse populations and clinical settings, standardization of protocols and evaluation metrics, and integration with existing clinical workflows \citep{nenningMachineLearningNeuroimaging2022}.
+
+The regulatory approval of AI systems for clinical use requires demonstration of safety, efficacy, and reliability across multiple clinical scenarios. This process can be lengthy and expensive, potentially limiting the speed at which research advances can be translated into clinical practice.
+
+The training and education of clinicians in the use of AI systems represents another important challenge. Clinicians must understand the capabilities and limitations of AI systems to use them effectively and safely in clinical care. This requires ongoing education and training programs that keep pace with rapid advances in AI technology.
+
+\subsection{Research Priorities and Future Work}
+
+Several key research priorities emerge from this analysis. First, the development of more interpretable AI models is crucial for clinical applications. Research into explainable AI approaches that can provide clear explanations for their decisions will be essential for gaining clinical acceptance and regulatory approval.
+
+Second, the development of standardized evaluation metrics and benchmark datasets is necessary for fair comparison of different AI approaches and for advancing the field as a whole. These resources will enable researchers to identify the most promising approaches and to build upon each other's work more effectively.
+
+Third, the integration of multimodal neural data remains a key challenge that requires continued research and development. Approaches that can effectively combine data from multiple modalities while maintaining interpretability and generalizability will be crucial for advancing our understanding of brain function.
+
+Fourth, the development of personalized AI approaches that can adapt to individual characteristics will be important for maximizing the clinical utility of AI systems in neuroscience applications. This will require advances in both AI methodology and our understanding of individual differences in brain function.
+
+Finally, the ethical implications of AI-neuroscience integration require ongoing attention and research. As these technologies become more sophisticated and widely available, society must develop frameworks for their responsible development and use.
+
+\subsection{Implications for Both Fields}
+
+The integration of AI and neuroscience has profound implications for both fields. For neuroscience, AI provides powerful new tools for analyzing complex neural data and developing computational models of brain function. These tools can reveal new insights into brain function that would be impossible to discover through traditional approaches alone.
+
+For AI, neuroscience provides inspiration for new architectures and learning algorithms that are more biologically plausible and potentially more efficient than current approaches. The study of biological neural systems can guide the development of AI systems that are better suited for real-world applications.
+
+The bidirectional influence between AI and neuroscience promises to yield advances that benefit both fields and society as a whole. As this integration continues to evolve, it will be important to maintain strong interdisciplinary collaboration and to ensure that advances in both fields are communicated effectively across disciplinary boundaries.
+
+\section{Conclusion}
+
+This report has analyzed the development and outlook of AI techniques in neuroscience. Through examining the literature, we've identified key trends, challenges, and opportunities in this rapidly evolving field.
+
+\subsection{Summary of Key Findings}
+
+Our analysis shows that AI has fundamentally transformed neuroscience research and clinical practice. In neural decoding and brain-computer interfaces, deep learning has achieved remarkable success in extracting information from neural signals. EEGNet shows strong generalization across multiple BCI paradigms \citep{lawhernEEGNetCompactConvolutional2018}, while spiking neural networks show promise in biologically plausible decoding \citep{zenkeSuperSpikeSupervisedLearning2018}. The reconstruction of visual experiences from brain activity is a particularly striking example of AI's potential \citep{mathisDecodingBrainNeural2024}.
+
+In disease diagnosis and neuroimaging analysis, AI approaches have achieved exceptional performance, particularly in Alzheimer's disease detection. AlzheimerNet achieved 98.67\% accuracy in classifying disease stages \citep{shamratAlzheimerNetEffectiveDeep2023}, while YOLOv11 approaches demonstrated the effectiveness of object detection architectures in medical imaging \citep{hechkelEarlyDetectionClassification2025}. These results highlight the potential for AI-assisted early disease detection and personalized medicine approaches.
+
+Neuroscience-inspired AI architectures have demonstrated significant advances in both biological plausibility and computational efficiency. Deep neural networks have proven effective at modeling neural responses and revealing gradients of feature complexity in the ventral visual pathway \citep{gucluDeepNeuralNetworks2015}. Neuromorphic computing systems, such as Intel's Loihi processor, have shown over three orders of magnitude superior energy efficiency compared to traditional approaches \citep{daviesLoihiNeuromorphicManycore2018}.
+
+\subsection{Main Contributions}
+
+This report makes several key contributions. First, we present a taxonomy of AI applications in neuroscience, categorizing approaches by their primary function and methodology. This taxonomy provides a framework for understanding diverse AI applications in neuroscience and identifies key considerations for each category.
+
+Second, we analyze representative methods across different domains, examining their strengths, limitations, and performance. This reveals distinct performance patterns and highlights the importance of choosing appropriate AI approaches for specific applications.
+
+Third, we identify critical challenges and future directions that will shape the evolution of this field. Our analysis reveals that while AI has achieved remarkable success in many neuroscience applications, significant challenges remain in areas such as interpretability, generalizability, and clinical translation.
+
+Fourth, we examine the ethical implications of AI-neuroscience integration, highlighting important considerations for the responsible development and deployment of these technologies. The integration of AI and neuroscience raises fundamental questions about privacy, autonomy, and human identity that require careful consideration.
+
+\subsection{Key Challenges and Limitations}
+
+Despite remarkable advances, several critical challenges remain unresolved. The complexity of neural data, spanning multiple scales from single neurons to entire brain networks, presents ongoing computational challenges \citep{onciulArtificialIntelligenceNeuroscience2025}. The integration of multimodal neural data requires sophisticated approaches that can handle heterogeneous data types while maintaining interpretability \citep{lorenziIntegrationMultimodalData2023}.
+
+The interpretability of AI models remains a significant challenge, particularly in clinical applications where understanding the basis of AI decisions is crucial \citep{sadeghiReviewExplainableArtificial2024}. The generalizability of AI models across different individuals and populations also requires continued attention, as individual differences in brain structure and function can significantly impact model performance.
+
+The ethical implications of AI-neuroscience integration require ongoing consideration, particularly regarding brain-computer interfaces and neural enhancement technologies \citep{gordonEthicalConsiderationsUse2024}. Society must develop frameworks for the responsible development and use of these technologies as they become more sophisticated and widely available.
+
+\subsection{Future Directions and Opportunities}
+
+The integration of AI and neuroscience presents unprecedented opportunities for advancing both fields. The development of more sophisticated AI architectures inspired by biological neural systems promises to yield both better models of brain function and more efficient computational systems \citep{schmidgallBraininspiredLearningArtificial2024}. The application of AI to large-scale neural datasets has the potential to reveal new insights into brain function that would be impossible to discover through traditional approaches alone.
+
+The development of real-time neural decoding systems opens new possibilities for brain-computer interfaces and neurorehabilitation applications \citep{zhangBrainComputerInterfaces2024}. The integration of AI with emerging neurotechnologies presents opportunities for closed-loop systems that can adaptively respond to neural states, enabling new approaches to treating neurological disorders.
+
+The convergence of AI and neuroscience is driving technological advances that extend beyond either field alone. Neuromorphic computing represents one example of this convergence, offering significant advantages in energy efficiency and biological plausibility \citep{daviesLoihiNeuromorphicManycore2018}. The development of brain-inspired learning algorithms promises to yield AI systems that are both more efficient and more biologically plausible.
+
+\subsection{Research Priorities}
+
+Several key research priorities emerge from this analysis. First, the development of more interpretable AI models is crucial for clinical applications. Research into explainable AI approaches that can provide clear explanations for their decisions will be essential for gaining clinical acceptance and regulatory approval.
+
+Second, the development of standardized evaluation metrics and benchmark datasets is necessary for fair comparison of different AI approaches and for advancing the field as a whole. These resources will enable researchers to identify the most promising approaches and to build upon each other's work more effectively.
+
+Third, the integration of multimodal neural data remains a key challenge that requires continued research and development. Approaches that can effectively combine data from multiple modalities while maintaining interpretability and generalizability will be crucial for advancing our understanding of brain function.
+
+Fourth, the development of personalized AI approaches that can adapt to individual characteristics will be important for maximizing the clinical utility of AI systems in neuroscience applications. This will require advances in both AI methodology and our understanding of individual differences in brain function.
+
+Finally, the ethical implications of AI-neuroscience integration require ongoing attention and research. As these technologies become more sophisticated and widely available, society must develop frameworks for their responsible development and use.
+
+\subsection{Implications for the Field}
+
+The integration of AI and neuroscience has profound implications for both fields. For neuroscience, AI provides powerful new tools for analyzing complex neural data and developing computational models of brain function. These tools can reveal new insights into brain function that would be impossible to discover through traditional approaches alone.
+
+For AI, neuroscience provides inspiration for new architectures and learning algorithms that are more biologically plausible and potentially more efficient than current approaches. The study of biological neural systems can guide the development of AI systems that are better suited for real-world applications.
+
+The bidirectional influence between AI and neuroscience promises to yield advances that benefit both fields and society as a whole. As this integration continues to evolve, it will be important to maintain strong interdisciplinary collaboration and to ensure that advances in both fields are communicated effectively across disciplinary boundaries.
+
+\subsection{Final Thoughts}
+
+AI techniques in neuroscience represent one of the most exciting frontiers in modern science. The convergence of these fields has already yielded remarkable advances in understanding brain function and developing intelligent systems. Looking forward, continued integration of AI and neuroscience promises new possibilities for understanding the brain, treating neurological disorders, and developing more intelligent computational systems.
+
+The remaining challenges are significant, but they also represent opportunities for innovation and discovery. Through interdisciplinary collaboration, careful consideration of ethics, and continued research investment, we can ensure that AI-neuroscience integration continues to benefit both fields and society.
+
+The future of AI-neuroscience integration looks promising. As these fields converge further, we can expect more breakthroughs that will transform our understanding of intelligence—both artificial and biological—and open new possibilities for improving human health.
+
+\section*{Acknowledgment}
+This report was part of the COMPSCI 402 course at Duke Kunshan University, instructed by Prof. Peng Sun.
+
+{
+\small
+\bibliographystyle{IEEEtranN}
+\bibliography{CS 402}
+}
+
+% Include all bibliography entries, even if not explicitly cited
+\nocite{*}
+
+\end{document}
+
